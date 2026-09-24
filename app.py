@@ -1,34 +1,32 @@
 import streamlit as st
-import requests
 from datetime import date
 
-st.title("Registro de participante")
+st.title("🎂 Calculadora de Fecha de Nacimiento")
 
-# Captura de fecha de nacimiento
-fecha_nacimiento = st.date_input(
-    "Fecha de nacimiento",
-    value=date(2010, 1, 1),
-    min_value=date(1950, 1, 1),
-    max_value=date.today()
+st.write("Ingrese su edad actual:")
+
+edad = st.number_input(
+    "Edad",
+    min_value=0,
+    max_value=120,
+    step=1
 )
 
-st.write("Fecha seleccionada:", fecha_nacimiento.strftime("%d/%m/%Y"))
+if st.button("Calcular fecha de nacimiento"):
 
-if st.button("Guardar"):
-    
-    datos = {
-        "fecha_nacimiento": fecha_nacimiento.strftime("%Y-%m-%d")
-    }
+    hoy = date.today()
 
-    # Ejemplo de envío a una API
-    url = "https://tu-api.com/personas"
+    anio_nacimiento = hoy.year - edad
 
-    respuesta = requests.post(
-        url,
-        json=datos
+    st.success(
+        f"Fecha de nacimiento estimada: "
+        f"{hoy.day:02d}/{hoy.month:02d}/{anio_nacimiento}"
     )
 
-    if respuesta.status_code == 200:
-        st.success("Información guardada correctamente")
-    else:
-        st.error(f"Error: {respuesta.status_code}")
+    st.write(f"📅 Día: {hoy.day}")
+    st.write(f"📅 Mes: {hoy.month}")
+    st.write(f"📅 Año: {anio_nacimiento}")
+
+    st.info(
+        "Este cálculo supone que hoy es el día de su cumpleaños."
+    )
